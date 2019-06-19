@@ -35,7 +35,7 @@ const getBinaryContent = (file) => {
 
 const MediaFormField = ({ label, id, src, onChange }) => (
   <div className="form__field">
-    <label className="form__label" htmlFor={id}>{label}</label>
+    {label && <label className="form__label" htmlFor={id}>{label}</label>}
     <Dropzone multiple={false} onDrop={onChange}>
       {({ getRootProps, getInputProps }) => (
         <section className="media-form__field-image-section form__input">
@@ -107,33 +107,32 @@ const MediaImage = (props) => {
 
   return (
     <React.Fragment>
-      <form onSubmit={e => onSubmit(e, field, media)} className="media-form">
-        <MediaFormField
-          label={label}
-          id={id}
-          src={(
-            !!media
-            ? `'data:${media.type};base64, ${localPreview}'`
-            : `${BASE_URL}${idx(remoteMedia, _ => _.uri.url)}`
-          )}
-          onChange={async files => {
-            const binary = await getBinaryContent(files[0])
-            setLocalPreview(binaryToBase64(binary))
-            setMedia(files[0])
-            setRemoteMedia(null)
-          }}
-        />
-        <div className="form__button-wrapper">
-          {remoteMedia == null && done && !fileChanged && <input 
-            className="form__button" 
-            type="submit" 
-            value="Upload"
-          />}
-          {!done && !fileChanged && <p>Uploading...</p>}
-          {done && fileChanged ? <div>Image Uploaded !</div> : ''}
-          {failed ? 'Failed to upload image' : ''}
-        </div>
-      </form>
+      <MediaFormField
+        label={label}
+        id={id}
+        src={(
+          !!media
+          ? `'data:${media.type};base64, ${localPreview}'`
+          : `${BASE_URL}${idx(remoteMedia, _ => _.uri.url)}`
+        )}
+        onChange={async files => {
+          const binary = await getBinaryContent(files[0])
+          setLocalPreview(binaryToBase64(binary))
+          setMedia(files[0])
+          setRemoteMedia(null)
+        }}
+      />
+      <div className="form__button-wrapper">
+        {remoteMedia == null && done && !fileChanged && <input 
+          className="form__button" 
+          type="submit" 
+          value="Upload"
+          onClick={e => onSubmit(e, field, media)}
+        />}
+        {!done && !fileChanged && <p>Uploading...</p>}
+        {done && fileChanged ? <div>Image Uploaded !</div> : ''}
+        {failed ? 'Failed to upload image' : ''}
+      </div>
     </React.Fragment>
   )
 }

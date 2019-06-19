@@ -25,15 +25,15 @@ class Demo extends Component {
   render() {
     console.log(this.state.fileUUIDs)
     return <div>
-      <h1>media-image Demo</h1>
+      <h1>Media Image Demo</h1>
       <MediaImage
-        id={''}
-        field={''}
-        label={''}
-        nodeType={''}
-        BASE_URL={''}
-        authorization={''}
-        fileUuid={''}
+        id={'card_image'}
+        field={'field_opro_card_image'}
+        label={'Card Image'}
+        nodeType={'opro'}
+        BASE_URL={'http://live-cast-n-blast.pantheonsite.io'}
+        authorization={'asdf_2:asdf'}
+        fileUuid={null}
         onChange={this.onChange}
       />
     </div>
