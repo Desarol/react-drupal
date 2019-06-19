@@ -1,7 +1,7 @@
 {
   "name": "react-drupal",
   "version": "1.0.0",
-  "description": "media-image React component",
+  "description": "React Components for Drupal",
   "main": "index.js",
   "module": "es/index.js",
   "files": [
