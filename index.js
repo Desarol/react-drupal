@@ -1,1 +1,1 @@
-export { default as MediaImage } from './src/MediaImage'
+export { default as MediaImage } from './lib/MediaImage'
