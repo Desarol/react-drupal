@@ -1,5 +1,5 @@
 {
-  "name": "media-image",
+  "name": "react-drupal",
   "version": "1.0.0",
   "description": "media-image React component",
   "main": "lib/index.js",
