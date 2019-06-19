@@ -3,7 +3,7 @@ import regeneratorRuntime from 'regenerator-runtime'
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import MediaImage from '../../src/'
+import MediaImage from '../../src/MediaImage'
 
 class Demo extends Component {
   constructor(props) {
