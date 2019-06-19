@@ -31,9 +31,9 @@ class Demo extends Component {
         field={'field_opro_card_image'}
         label={'Card Image'}
         nodeType={'opro'}
-        BASE_URL={'http://live-cast-n-blast.pantheonsite.io'}
+        baseURL={'http://live-cast-n-blast.pantheonsite.io'}
         authorization={'asdf_2:asdf'}
-        fileUuid={null}
+        fileUUID={null}
         onChange={this.onChange}
       />
     </div>
