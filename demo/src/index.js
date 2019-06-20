@@ -9,7 +9,10 @@ class Demo extends Component {
     super(props)
 
     this.state = {
-      fileUUIDs: []
+      fileUUIDs: [
+        '44e97ee6-8435-4a6e-9bad-37668b47cd43',
+        '2aa30958-b0fe-4c8f-ae24-42b12419a85d'
+      ]
     }
 
     this.onChange = this.onChange.bind(this)
@@ -27,13 +30,13 @@ class Demo extends Component {
       <h1>Media Image Demo</h1>
       <MediaImage
         id={config.id}
-        limit={1}
+        limit={2}
         field={config.field}
         label={config.label}
         nodeType={config.nodeType}
         baseURL={config.baseURL}
         authorization={config.authorization}
-        fileUUID={this.state.fileUUIDs}
+        fileUUIDs={this.state.fileUUIDs}
         onChange={this.onChange}
       />
     </div>

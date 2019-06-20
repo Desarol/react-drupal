@@ -19,7 +19,7 @@ const MediaImage = (props) => {
     nodeType,
     baseURL,
     authorization,
-    fileUUID,
+    fileUUIDs,
     imageURL,
     onChange,
     deleteUUID
@@ -38,17 +38,22 @@ const MediaImage = (props) => {
 
   useEffect(() => {
     (async () => {
-      if (fileUUID.length !== 0 && media.length === 0) {
-        const file = await Entity.Load('file', 'file', fileUUID)
-        setMedia([...media, {
-          name: file.filename,
-          imageURL: file.uri.url,
-          drupalUUID: file.entityUuid
-        }])
+      if (fileUUIDs.length !== 0 && media.length === 0) {
+        const files = await Promise.all(fileUUIDs.map(uuid => Entity.Load('file', 'file', uuid)))
+        setMedia([...media, ...files.map(file => {
+          console.log(file)
+          return {
+            name: file.filename,
+            imageURL: file.uri.url,
+            drupalUUID: file.entityUuid
+          }
+        })])
       }
     })()
   })
 
+  console.log(media)
+  
   return (
     <React.Fragment>
       {media.map(image => <ImagePreview 
