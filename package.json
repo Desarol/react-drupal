@@ -20,7 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "drupal-jsonapi-client": "^3.0.0",
+    "drupal-jsonapi-client": "^3.0.2",
     "regenerator-runtime": "^0.13.2"
   },
   "peerDependencies": {
