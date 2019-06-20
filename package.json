@@ -20,7 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "drupal-jsonapi-client": "git+https://github.com/auspicus/drupal-jsonapi-client.git#3.x",
+    "drupal-jsonapi-client": "^3.0.0",
     "idx": "^2.5.6",
     "react-dropzone": "^10.1.5",
     "regenerator-runtime": "^0.13.2"
