@@ -1,0 +1,1 @@
+export { default as MediaImage } from './lib/MediaImage'
