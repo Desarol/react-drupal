@@ -2,7 +2,6 @@ import 'regenerator-runtime/runtime'
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 import MediaImage from '../../src/MediaImage'
-import config from '../../config'
 
 class Demo extends Component {
   constructor(props) {
@@ -29,13 +28,13 @@ class Demo extends Component {
     return <div>
       <h1>Media Image Demo</h1>
       <MediaImage
-        id={config.id}
-        limit={2}
-        field={config.field}
-        label={config.label}
-        nodeType={config.nodeType}
-        baseURL={config.baseURL}
-        authorization={config.authorization}
+        id={'field_image'}
+        limit={1}
+        field={'field_image'}
+        label={'Field Image'}
+        nodeType={'article'}
+        baseURL={'https://example.pantheonsite.io'}
+        authorization={'username:password'}
         fileUUIDs={this.state.fileUUIDs}
         onChange={this.onChange}
       />

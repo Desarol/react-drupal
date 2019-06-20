@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ImagePreview from '../ImagePreview'
-import { Entity, File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
+import { Entity, File as FileEntity, GlobalClient, Filter } from 'drupal-jsonapi-client'
 import './styles.css'
 
 export const IconAdd = (props) => (
@@ -20,28 +20,31 @@ const MediaImage = (props) => {
     baseURL,
     authorization,
     fileUUIDs,
-    imageURL,
     onChange,
-    deleteUUID
+    sendCookies
   } = props 
 
   const [media, setMedia] = useState([])
   const [uploading, setUploading] = useState(false)
 
-  if (window.location.host.includes('localhost')) {
-    GlobalClient.authorization = `Basic ${btoa(authorization)}`
-  } else {
-    GlobalClient.sendCookies = true
-  }
-  
+  GlobalClient.authorization = authorization ? `Basic ${btoa(authorization)}` : null
+  GlobalClient.sendCookies = sendCookies
   GlobalClient.baseUrl = baseURL
 
   useEffect(() => {
     (async () => {
       if (fileUUIDs.length !== 0 && media.length === 0) {
-        const files = await Promise.all(fileUUIDs.map(uuid => Entity.Load('file', 'file', uuid)))
+        const files = await Entity.LoadMultiple({
+          entityType: 'file',
+          entityBundle: 'file',
+          filter: new Filter({
+            identifier: 'ids',
+            path: 'id',
+            operator: 'IN',
+            value: fileUUIDs
+          })
+        })
         setMedia([...media, ...files.map(file => {
-          console.log(file)
           return {
             name: file.filename,
             imageURL: file.uri.url,
@@ -51,8 +54,6 @@ const MediaImage = (props) => {
       }
     })()
   })
-
-  console.log(media)
   
   return (
     <React.Fragment>
@@ -84,14 +85,12 @@ const MediaImage = (props) => {
                 imageURL: drupalResponse.uri.url,
                 drupalUUID: drupalResponse.entityUuid
               }]
-
               setMedia(newMedia)
-
               onChange(newMedia.map(item => item.drupalUUID))
+              setUploading(false)
               
-              if(event.target)
+              if (event.target)
                 event.target.value = null
-                setUploading(false)
             }}
           />
         </div>
