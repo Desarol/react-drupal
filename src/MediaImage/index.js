@@ -1,4 +1,4 @@
-import regeneratorRuntime from 'regenerator-runtime'
+import 'regenerator-runtime/runtime'
 import React, { useState, useEffect } from 'react'
 import idx from 'idx'
 import Dropzone from 'react-dropzone'
