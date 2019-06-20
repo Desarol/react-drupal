@@ -2,7 +2,6 @@ import 'regenerator-runtime/runtime'
 import React, { useState, useEffect } from 'react'
 import ImagePreview from '../ImagePreview'
 import { Entity, File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
-import Throbber from './throbber-active.gif'
 import './styles.css'
 
 export const IconAdd = (props) => (
@@ -92,7 +91,7 @@ const MediaImage = (props) => {
                 setUploading(false)
             }}
           />
-          { uploading && <img src={Throbber} /> }
+          { uploading && 'uploading...' }
         </div>
       </div>}
     </React.Fragment>
