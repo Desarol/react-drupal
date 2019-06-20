@@ -35,7 +35,6 @@ const MediaImage = (props) => {
     GlobalClient.sendCookies = true
   }
   
-  GlobalClient.transport = window.fetch.bind(window)
   GlobalClient.baseUrl = baseURL
 
   useEffect(() => {
@@ -91,8 +90,8 @@ const MediaImage = (props) => {
                 setUploading(false)
             }}
           />
-          { uploading && 'uploading...' }
         </div>
+        { uploading && 'uploading...' }
       </div>}
     </React.Fragment>
   )
