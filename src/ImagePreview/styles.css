@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 600px;
   padding: 1rem
 }
 
@@ -17,9 +16,8 @@
 }
 
 .image-preview__button {
-  background-color: #8c7450;
   border: 1px solid #8c7450;
-  color: #fff;
+  color: #000;
   cursor: pointer;
   line-height: 1.4;
   padding: .5em 1em;
@@ -29,6 +27,5 @@
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
-  font-family: "Roboto Slab", serif;
   transition: .2s ease-in-out all;
 }

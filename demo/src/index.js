@@ -9,7 +9,7 @@ class Demo extends Component {
     super(props)
 
     this.state = {
-      fileUUIDs: []
+      fileUUIDs: ['d1103c6b-dc61-429b-9505-8d4f02b64118']
     }
 
     this.onChange = this.onChange.bind(this)
