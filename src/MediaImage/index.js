@@ -1,7 +1,5 @@
 import 'regenerator-runtime/runtime'
 import React, { useState, useEffect } from 'react'
-import idx from 'idx'
-import Dropzone from 'react-dropzone'
 import ImagePreview from '../ImagePreview'
 import { Entity, File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
 import Throbber from './throbber-active.gif'
