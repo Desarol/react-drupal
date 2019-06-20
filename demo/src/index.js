@@ -1,4 +1,4 @@
-import regeneratorRuntime from 'regenerator-runtime'
+import 'regenerator-runtime/runtime'
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 import MediaImage from '../../src/MediaImage'
