@@ -27,6 +27,7 @@ class Demo extends Component {
       <h1>Media Image Demo</h1>
       <MediaImage
         id={config.id}
+        limit={1}
         field={config.field}
         label={config.label}
         nodeType={config.nodeType}

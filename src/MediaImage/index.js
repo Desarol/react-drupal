@@ -16,6 +16,7 @@ export const IconAdd = (props) => (
 const MediaImage = (props) => {
   const { 
     id,
+    limit,
     field,
     label,
     nodeType,
@@ -43,7 +44,6 @@ const MediaImage = (props) => {
     (async () => {
       if (fileUUID.length !== 0 && media.length === 0) {
         const file = await Entity.Load('file', 'file', fileUUID)
-        console.log(file)
         setMedia([...media, {
           name: file.filename,
           imageURL: file.uri.url,
@@ -66,7 +66,7 @@ const MediaImage = (props) => {
           setMedia(newMedia)
         }}
       />)}
-      <div className="media-image__wrapper">
+      {media.length < limit && <div className="media-image__wrapper">
         {label && <label htmlFor="media-image">{label}</label>}
         <div className="media-image__box">
           <input
@@ -78,14 +78,15 @@ const MediaImage = (props) => {
               setUploading(true)
               const localFile = event.target.files[0]
               const drupalResponse = await FileEntity.Upload(localFile, localFile.name, "node", nodeType, field)
-
-              setMedia([...media, {
+              const newMedia = [...media, {
                 name: localFile.name,
                 imageURL: drupalResponse.uri.url,
                 drupalUUID: drupalResponse.entityUuid
-              }])
+              }]
 
-              onChange(media.map(item => item.drupalUUID))
+              setMedia(newMedia)
+
+              onChange(newMedia.map(item => item.drupalUUID))
               
               if(event.target)
                 event.target.value = null
@@ -94,7 +95,7 @@ const MediaImage = (props) => {
           />
           { uploading && <img src={Throbber} /> }
         </div>
-      </div>
+      </div>}
     </React.Fragment>
   )
 }
