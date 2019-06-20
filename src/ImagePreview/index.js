@@ -1,11 +1,16 @@
 import React from 'react'
+import './styles.css'
 
 const ImagePreview = (props) => {
-  const { image } = props
+  const { image, name, deleteImage } = props
 
   return(
-    <div>
-      {<img src={image} />}
+    <div className="image-preview">
+      <div className="image-preview__image-wrapper">
+        {<img className="image-preview__image" src={image} />}
+        <div>{name}</div>
+      </div>
+      <button onClick={deleteImage} className="image-preview__button">Remove</button>
     </div>
   )
 }

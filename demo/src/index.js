@@ -1,9 +1,8 @@
 import regeneratorRuntime from 'regenerator-runtime'
-
 import React, {Component} from 'react'
 import {render} from 'react-dom'
-
 import MediaImage from '../../src/MediaImage'
+import config from '../../config'
 
 class Demo extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class Demo extends Component {
 
   onChange(uuid) {
     this.setState({
-      fileUUIDs: [ ...this.state.fileUUIDs, uuid]
+      fileUUIDs: uuid
     })
   }
 
@@ -27,13 +26,13 @@ class Demo extends Component {
     return <div>
       <h1>Media Image Demo</h1>
       <MediaImage
-        id={'card_image'}
-        field={'field_opro_card_image'}
-        label={'Card Image'}
-        nodeType={'opro'}
-        baseURL={'http://live-cast-n-blast.pantheonsite.io'}
-        authorization={'asdf_2:asdf'}
-        fileUUID={null}
+        id={config.id}
+        field={config.field}
+        label={config.label}
+        nodeType={config.nodeType}
+        baseURL={config.baseURL}
+        authorization={config.authorization}
+        fileUUID={this.state.fileUUIDs}
         onChange={this.onChange}
       />
     </div>

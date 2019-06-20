@@ -3,6 +3,7 @@ import idx from 'idx'
 import Dropzone from 'react-dropzone'
 import ImagePreview from '../ImagePreview'
 import { Entity, File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
+import Throbber from './throbber-active.gif'
 import './styles.css'
 
 export const IconAdd = (props) => (
@@ -21,7 +22,9 @@ const MediaImage = (props) => {
     baseURL,
     authorization,
     fileUUID,
-    onChange
+    imageURL,
+    onChange,
+    deleteUUID
   } = props 
 
   const [media, setMedia] = useState([])
@@ -38,9 +41,14 @@ const MediaImage = (props) => {
 
   useEffect(() => {
     (async () => {
-      if (fileUUID && !remoteMedia && !localPreview) {
+      if (fileUUID.length !== 0 && media.length === 0) {
         const file = await Entity.Load('file', 'file', fileUUID)
-        setMedia(file)
+        console.log(file)
+        setMedia([...media, {
+          name: file.filename,
+          imageURL: file.uri.url,
+          drupalUUID: file.entityUuid
+        }])
       }
     })()
   })
@@ -48,28 +56,45 @@ const MediaImage = (props) => {
   return (
     <React.Fragment>
       {media.map(image => <ImagePreview 
-        key={image.localFile.name}
+        key={image.name}
+        name={image.name}
         image={baseURL + image.imageURL}
-      />)}
-      <input
-        accept="image/*" 
-        type="file"
-        onChange={async event => {
-          event.persist()
-          const localFile = event.target.files[0]
-          const drupalResponse = await FileEntity.Upload(localFile, localFile.name, "node", nodeType, field)
-
-          setMedia([...media, {
-            localFile,
-            imageURL: drupalResponse.uri.url
-          }])
-          onChange(drupalResponse.entityUuid)
-          
-          if(event.target)
-            event.target.value = null
+        deleteImage={() => {
+          (new FileEntity(image.drupalUUID)).delete()
+          const newMedia = media.filter(item => item.drupalUUID != image.drupalUUID)
+          onChange(newMedia.map(item => item.drupalUUID))
+          setMedia(newMedia)
         }}
-      />
-      { uploading && 'loading' }
+      />)}
+      <div className="media-image__wrapper">
+        {label && <label htmlFor="media-image">{label}</label>}
+        <div className="media-image__box">
+          <input
+            id="media-image"
+            accept="image/*" 
+            type="file"
+            onChange={async event => {
+              event.persist()
+              setUploading(true)
+              const localFile = event.target.files[0]
+              const drupalResponse = await FileEntity.Upload(localFile, localFile.name, "node", nodeType, field)
+
+              setMedia([...media, {
+                name: localFile.name,
+                imageURL: drupalResponse.uri.url,
+                drupalUUID: drupalResponse.entityUuid
+              }])
+
+              onChange(media.map(item => item.drupalUUID))
+              
+              if(event.target)
+                event.target.value = null
+                setUploading(false)
+            }}
+          />
+          { uploading && <img src={Throbber} /> }
+        </div>
+      </div>
     </React.Fragment>
   )
 }

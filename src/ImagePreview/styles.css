@@ -1,0 +1,34 @@
+.image-preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 600px;
+  padding: 1rem
+}
+
+.image-preview__image-wrapper {
+  display: flex;
+  width: 60%;
+}
+
+.image-preview__image {
+  width: 150px;
+  padding-right: 1rem;
+}
+
+.image-preview__button {
+  background-color: #8c7450;
+  border: 1px solid #8c7450;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1.4;
+  padding: .5em 1em;
+  height: max-content;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: "Roboto Slab", serif;
+  transition: .2s ease-in-out all;
+}
