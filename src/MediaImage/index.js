@@ -79,7 +79,7 @@ const MediaImage = (props) => {
               event.persist()
               setUploading(true)
               const localFile = event.target.files[0]
-              const drupalResponse = await FileEntity.Upload(localFile, localFile.name, "node", nodeType, field)
+              const drupalResponse = await FileEntity.Upload(localFile, localFile.name, entityType, entityBundle, field)
               const newMedia = [...media, {
                 name: localFile.name,
                 imageURL: drupalResponse.uri.url,
