@@ -27,7 +27,7 @@ const MediaImage = (props) => {
   const [media, setMedia] = useState([])
   const [uploading, setUploading] = useState(false)
 
-  GlobalClient.authorization = authorization ? `Basic ${btoa(authorization)}` : null
+  GlobalClient.authorization = authorization ? authorization : null
   GlobalClient.sendCookies = sendCookies
   GlobalClient.baseUrl = baseURL
 
