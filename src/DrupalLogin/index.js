@@ -3,31 +3,28 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { User } from 'drupal-jsonapi-client'
 import DrupalAuthenticationProvider from '../DrupalAuthenticationProvider'
-import { saveSession } from '../utils'
+import { saveSession, DRUPAL_SESSION_KEY } from '../utils'
 
 export default ({
-  onAuthenticated,
+  onAuthenticationInit,
+  onAuthenticationChange,
+  expireAfterMinutes = 60,
   usernameLabel = 'Username',
   passwordLabel = 'Password',
   buttonLabel = 'Login',
 }) => {
   return (
-    <DrupalAuthenticationProvider
-      onChange={(jwt) => {
-        if (jwt) onAuthenticated(jwt)
-      }}
-      onInit={(jwt) => {
-        if (jwt) onAuthenticated(jwt)
-      }}>
+    <DrupalAuthenticationProvider onChange={onAuthenticationChange} onInit={onAuthenticationInit}>
       {({ jwt }) => !jwt ? (
         <Formik
           initialValues={{ username: '', password: '' }}
           onSubmit={async ({ username, password }, { setSubmitting, setStatus }) => {
             try {
               const user = await User.Login(username, password)
-              saveSession(user.access_token)
+              saveSession(user.access_token, DRUPAL_SESSION_KEY, expireAfterMinutes)
               setSubmitting(false)
             } catch (err) {
+              console.error(err)
               try {
                 setStatus(err.response.data.message)
               } catch (err) {

@@ -1,3 +1,43 @@
+let expireTimeout
+let earliestExpiration = Number.MAX_SAFE_INTEGER
+let trackedItems = []
+const clearExpiredItems = () => {
+  const newTrackedItems = []
+  let didDeleteItems = false
+  // Find all tracked storage
+  trackedItems.forEach(({ key, expiration }) => {
+    try {
+      if (expiration <= Date.now()) {
+        // Delete item
+        window.localStorage.setItem(key, null)
+        didDeleteItems = true
+      } else {
+        newTrackedItems.push(key)
+      }
+    } catch (err) {}
+  })
+  trackedItems = newTrackedItems
+
+  if (didDeleteItems) {
+    // Notify storage listeners
+    window.dispatchEvent(new StorageEvent('storage'))
+  }
+
+  if (trackedItems.length > 0) {
+    setNextExpiration(trackedItems.sort((a, b) => b.expiration - a.expiration)[0].expiration)
+  }
+}
+const setNextExpiration = (expiration) => {
+  if (
+    expiration !== -1 &&
+    expiration < earliestExpiration
+  ) {
+    earliestExpiration = expiration
+    clearTimeout(expireTimeout)
+    expireTimeout = setTimeout(clearExpiredItems, earliestExpiration - Date.now())
+  }
+}
+
 /**
  * Retrieves an item from local storage.
  * 
@@ -16,12 +56,13 @@ export const getLocalStorage = (key, respectExpiration = true) => {
 
   try {
     const item = JSON.parse(window.localStorage.getItem(key))
-    if (
-      respectExpiration === true &&
-      item.expiration !== -1 &&
-      item.expiration <= Date.now()
-    ) {
-      return null
+    trackedItems = [...trackedItems.filter(item => item.key === key), { key, expiration: item.expiration }]
+    if (item.expiration !== -1) {
+      setNextExpiration(item.expiration)
+
+      if (item.expiration <= Date.now() && respectExpiration) {
+        return null
+      }
     }
     return item.object
   } catch (err) {
@@ -45,6 +86,7 @@ export const setLocalStorage = (key, object, expiration = -1) => {
   ) {
     throw new Error('Invalid arguments. Key must be a string, object must be an object, expiration must be a number')
   }
+  trackedItems = [...trackedItems.filter(item => item.key === key), { key, expiration }]
 
   window.localStorage.setItem(key, JSON.stringify({
     expiration,
@@ -54,6 +96,7 @@ export const setLocalStorage = (key, object, expiration = -1) => {
   // browsers don't dispatch a StorageEvent when the
   // modification happens within the same window.
   window.dispatchEvent(new StorageEvent('storage'))
+  setNextExpiration(expiration)
 }
 
 export const DRUPAL_SESSION_KEY = 'drupal.session'
@@ -62,6 +105,7 @@ export const DRUPAL_SESSION_KEY = 'drupal.session'
  * Save a JWT in local storage.
  * 
  * @param {string} jwt
+ * @param {string} key
  * @param {number} expireAfterMinutes default = 60
  */
 export const saveSession = (jwt, key = DRUPAL_SESSION_KEY, expireAfterMinutes = 60) => {
@@ -71,6 +115,8 @@ export const saveSession = (jwt, key = DRUPAL_SESSION_KEY, expireAfterMinutes = 
 
 /**
  * Get the current JWT from local storage.
+ *
+ * @param {string} key
  * 
  * @returns jwt or null
  */

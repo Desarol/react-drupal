@@ -6,20 +6,16 @@ import DrupalAuthenticationProvider from '../DrupalAuthenticationProvider'
 import { saveSession } from '../utils'
 
 export default ({
-  onAuthenticated,
+  onAuthenticationInit,
+  onAuthenticationChange,
+  expireAfterMinutes = 60,
   usernameLabel = 'Username',
   emailLabel = 'Email',
   passwordLabel = 'Password',
   buttonLabel = 'Register'
 }) => {
   return (
-    <DrupalAuthenticationProvider
-      onChange={(jwt) => {
-        if (jwt) onAuthenticated(jwt)
-      }}
-      onInit={(jwt) => {
-        if (jwt) onAuthenticated(jwt)
-      }}>
+    <DrupalAuthenticationProvider onChange={onAuthenticationChange} onInit={onAuthenticationInit}>
       {({ jwt }) => !jwt ? (
         <Formik
           initialValues={{ email: '', username: '', password: '' }}
@@ -27,7 +23,7 @@ export default ({
             try {
               await User.Register(email, username, password)
               const user = await User.Login(username, password)
-              saveSession(user.access_token)
+              saveSession(user.access_token, DRUPAL_SESSION_KEY, expireAfterMinutes)
               setSubmitting(false)
             } catch (err) {
               try {

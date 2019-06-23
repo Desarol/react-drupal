@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { render } from 'react-dom'
 import moment from 'moment'
-import {GlobalClient} from 'drupal-jsonapi-client';
+import { GlobalClient } from 'drupal-jsonapi-client'
 
 import DrupalImage from '../../src/DrupalImage'
 import DrupalDateTime from '../../src/DrupalDateTime'
@@ -12,10 +12,14 @@ import DrupalAuthenticationProvider from '../../src/DrupalAuthenticationProvider
 const Demo = () => {
   const [files, setFiles] = useState([])
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
+  const [baseUrl, setBaseUrl] = useState('https://example.pantheonsite.io')
 
   return (
     <div>
       <h1>react-drupal</h1>
+      <h2>Configuration</h2>
+      <label htmlFor="base-url">Drupal Site URL</label>
+      <input style={{ width: '250px' }} id="base-url" type="url" value={baseUrl} onChange={(e) => { setBaseUrl(e.target.value) }} />
 
       <h2>DrupalImage</h2>
       <DrupalImage
@@ -25,28 +29,28 @@ const Demo = () => {
         label={'Field Image'}
         entityType={'node'}
         entityBundle={'article'}
-        baseURL={'https://example.pantheonsite.io'}
+        baseURL={baseUrl}
         authorization={'username:password'}
         fileUUIDs={files}
         onChange={setFiles}
       />
 
       <h2>DrupalDateTime</h2>
-      <DrupalDateTime
-        id={'field_datetime'}
-        date={date}
-        onChange={setDate}
-        />
+      <DrupalDateTime id={'field_datetime'} date={date} onChange={setDate} />
       
       <h2>DrupalLogin</h2>
-      <DrupalLogin onAuthenticated={console.log} />
+      <DrupalLogin
+        expireAfterMinutes={1}
+        onAuthenticationChange={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
 
       <h2>DrupalRegister</h2>
-      <DrupalRegister onAuthenticated={console.log} />
+      <DrupalRegister
+        expireAfterMinutes={1}
+        onAuthenticationChange={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
 
-      <h2>DrupalAuthenticated</h2>
+      <h2>DrupalAuthenticationProvider</h2>
       <DrupalAuthenticationProvider
-        onInit={() => console.log('init')}
+        onInit={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}
         onChange={console.log}>
         {({ jwt }) => jwt ? (
           <React.Fragment>
