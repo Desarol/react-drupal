@@ -20,7 +20,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "drupal-jsonapi-client": "^3.0.2",
+    "drupal-jsonapi-client": "^3.0.5",
     "formik": "^1.5.7",
     "moment": "^2.24.0",
     "react-dates": "^20.2.4",

@@ -62,7 +62,7 @@ const DrupalImage = (props) => {
         name={image.name}
         image={baseURL + image.imageURL}
         deleteImage={() => {
-          (new FileEntity(image.drupalUUID)).delete()
+          FileEntity.Delete(image.drupalUUID)
           const newMedia = media.filter(item => item.drupalUUID != image.drupalUUID)
           onChange(newMedia.map(item => item.drupalUUID))
           setMedia(newMedia)

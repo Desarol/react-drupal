@@ -8,7 +8,7 @@
  */
 export const getLocalStorage = (key, respectExpiration = true) => {
   if (
-    typeof object !== 'object' ||
+    typeof key !== 'string' ||
     typeof respectExpiration !== 'boolean'
   ) {
     throw new Error('Invalid arguments. Key must be a string, respectExpiration must be a boolean')
@@ -50,6 +50,10 @@ export const setLocalStorage = (key, object, expiration = -1) => {
     expiration,
     object,
   }))
+  // We have to trigger a custom storage event because
+  // browsers don't dispatch a StorageEvent when the
+  // modification happens within the same window.
+  window.dispatchEvent(new StorageEvent('storage'))
 }
 
 export const DRUPAL_SESSION_KEY = 'drupal.session'
