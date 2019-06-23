@@ -27,7 +27,7 @@ const DrupalImage = (props) => {
   const [media, setMedia] = useState([])
   const [uploading, setUploading] = useState(false)
 
-  GlobalClient.authorization = authorization ? `Basic ${btoa(authorization)}` : null
+  GlobalClient.authorization = authorization ? authorization : null
   GlobalClient.sendCookies = sendCookies
   GlobalClient.baseUrl = baseURL
 
@@ -79,7 +79,7 @@ const DrupalImage = (props) => {
               event.persist()
               setUploading(true)
               const localFile = event.target.files[0]
-              const drupalResponse = await FileEntity.Upload(localFile, localFile.name, "node", nodeType, field)
+              const drupalResponse = await FileEntity.Upload(localFile, localFile.name, entityType, entityBundle, field)
               const newMedia = [...media, {
                 name: localFile.name,
                 imageURL: drupalResponse.uri.url,

@@ -17,7 +17,8 @@ const Demo = () => {
         limit={1}
         field={'field_image'}
         label={'Field Image'}
-        nodeType={'article'}
+        entityType={'node'}
+        entityBundle={'article'}
         baseURL={'https://example.pantheonsite.io'}
         authorization={'username:password'}
         fileUUIDs={files}
