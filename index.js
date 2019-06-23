@@ -1,3 +1,6 @@
+import * as DrupalAuthentication from './src/utils'
+export { DrupalAuthentication }
+
 export { default as DrupalAuthenticationProvider } from './lib/DrupalAuthenticationProvider'
 export { default as DrupalLogin } from './lib/DrupalLogin'
 export { default as DrupalRegister } from './lib/DrupalRegister'

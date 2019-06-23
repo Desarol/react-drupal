@@ -127,3 +127,12 @@ export const getSession = (key = DRUPAL_SESSION_KEY) => {
   }
   return null
 }
+
+/**
+ * Remove a JWT.
+ * 
+ * @param {string} key
+ */
+export const clearSession = (key = DRUPAL_SESSION_KEY) => {
+  setLocalStorage(key, null)
+}
