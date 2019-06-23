@@ -1,1 +1,2 @@
-export { default as MediaImage } from './lib/MediaImage'
+export { default as DrupalDateTime } from './lib/DrupalDateTime'
+export { default as DrupalImage } from './lib/DrupalImage'

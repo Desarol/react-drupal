@@ -1,33 +1,18 @@
-import 'regenerator-runtime/runtime'
-import React, {Component} from 'react'
-import {render} from 'react-dom'
-import MediaImage from '../../src/MediaImage'
+import React, { useState } from 'react'
+import { render } from 'react-dom'
+import DrupalImage from '../../src/DrupalImage'
+import moment from 'moment'
+import DrupalDateTime from '../../src/DrupalDateTime'
 
-class Demo extends Component {
-  constructor(props) {
-    super(props)
+const Demo = () => {
+  const [files, setFiles] = useState([])
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
 
-    this.state = {
-      fileUUIDs: [
-        '44e97ee6-8435-4a6e-9bad-37668b47cd43',
-        '2aa30958-b0fe-4c8f-ae24-42b12419a85d'
-      ]
-    }
-
-    this.onChange = this.onChange.bind(this)
-  }
-
-  onChange(uuid) {
-    this.setState({
-      fileUUIDs: uuid
-    })
-  }
-
-  render() {
-    console.log(this.state.fileUUIDs)
-    return <div>
-      <h1>Media Image Demo</h1>
-      <MediaImage
+  return (
+    <div>
+      <h1>react-drupal</h1>
+      <h2>DrupalImage</h2>
+      <DrupalImage
         id={'field_image'}
         limit={1}
         field={'field_image'}
@@ -35,11 +20,17 @@ class Demo extends Component {
         nodeType={'article'}
         baseURL={'https://example.pantheonsite.io'}
         authorization={'username:password'}
-        fileUUIDs={this.state.fileUUIDs}
-        onChange={this.onChange}
+        fileUUIDs={files}
+        onChange={setFiles}
       />
+      <h2>DrupalDateTime</h2>
+      <DrupalDateTime
+        id={'field_datetime'}
+        date={date}
+        onChange={setDate}
+        />
     </div>
-  }
+  )
 }
 
 render(<Demo/>, document.querySelector('#demo'))

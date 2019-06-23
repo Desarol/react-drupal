@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ImagePreview from '../ImagePreview'
+import DrupalImagePreview from './DrupalImagePreview'
 import { Entity, File as FileEntity, GlobalClient, Filter } from 'drupal-jsonapi-client'
 import './styles.css'
 
@@ -10,7 +10,7 @@ export const IconAdd = (props) => (
   </svg>
 )
 
-const MediaImage = (props) => {
+const DrupalImage = (props) => {
   const { 
     id,
     limit,
@@ -57,7 +57,7 @@ const MediaImage = (props) => {
   
   return (
     <React.Fragment>
-      {media.map(image => <ImagePreview 
+      {media.map(image => <DrupalImagePreview 
         key={image.name}
         name={image.name}
         image={baseURL + image.imageURL}
@@ -100,4 +100,4 @@ const MediaImage = (props) => {
   )
 }
 
-export default MediaImage
+export default DrupalImage
