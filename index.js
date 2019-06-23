@@ -1,5 +1,4 @@
-export { default as DrupalAnonymous } from './lib/DrupalAnonymous'
-export { default as DrupalAuthenticated } from './lib/DrupalAuthenticated'
+export { default as DrupalAuthenticationProvider } from './lib/DrupalAuthenticationProvider'
 export { default as DrupalLogin } from './lib/DrupalLogin'
 export { default as DrupalRegister } from './lib/DrupalRegister'
 
