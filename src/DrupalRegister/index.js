@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { User } from 'drupal-jsonapi-client'
 import DrupalAuthenticationProvider from '../DrupalAuthenticationProvider'
-import { saveSession } from '../utils'
+import { saveSession, DRUPAL_SESSION_KEY } from '../utils'
 
 export default ({
   onAuthenticationInit,
