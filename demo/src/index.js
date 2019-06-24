@@ -3,14 +3,17 @@ import { render } from 'react-dom'
 import DrupalImage from '../../src/DrupalImage'
 import moment from 'moment'
 import DrupalDateTime from '../../src/DrupalDateTime'
+import DrupalDatePicker from '../../src/DrupalDatePicker';
 
 const Demo = () => {
   const [files, setFiles] = useState([])
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
+  console.log(date)
 
   return (
     <div>
       <h1>react-drupal</h1>
+
       <h2>DrupalImage</h2>
       <DrupalImage
         id={'field_image'}
@@ -24,12 +27,16 @@ const Demo = () => {
         fileUUIDs={files}
         onChange={setFiles}
       />
+
       <h2>DrupalDateTime</h2>
       <DrupalDateTime
-        id={'field_datetime'}
         date={date}
-        onChange={setDate}
-        />
+        onChange={setDate}/>
+      
+      <h2>DrupalDatePicker</h2>
+      <DrupalDatePicker
+        date={date}
+        onChange={setDate}/>
     </div>
   )
 }
