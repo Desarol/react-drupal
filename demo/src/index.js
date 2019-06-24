@@ -30,13 +30,13 @@ const Demo = () => {
       <label htmlFor="base-url">Drupal Site URL</label>
       <input style={{ width: '250px' }} id="base-url" type="url" value={baseUrl} onChange={(e) => { setBaseUrl(e.target.value) }} />
       <br />
-      <label htmlFor="base-url">Entity Type</label>
+      <label htmlFor="entity-type">Entity Type</label>
       <input style={{ width: '250px' }} id="entity-type" type="text" value={entityType} onChange={(e) => { setEntityType(e.target.value) }} />
       <br />
-      <label htmlFor="base-url">Entity Bundle</label>
+      <label htmlFor="entity-bundle">Entity Bundle</label>
       <input style={{ width: '250px' }} id="entity-bundle" type="text" value={entityBundle} onChange={(e) => { setEntityBundle(e.target.value) }} />
       <br />
-      <label htmlFor="base-url">Field Name</label>
+      <label htmlFor="field-name">Field Name</label>
       <input style={{ width: '250px' }} id="field-name" type="text" value={fieldName} onChange={(e) => { setFieldName(e.target.value) }} />
 
       <h2>DrupalLogin</h2>
