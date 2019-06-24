@@ -1,46 +1,58 @@
 import 'regenerator-runtime/runtime'
-import React, {Component} from 'react'
-import {render} from 'react-dom'
-import MediaImage from '../../src/MediaImage'
+import { File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
+import React, { useState } from 'react'
+import { render } from 'react-dom'
+import moment from 'moment'
 
-class Demo extends Component {
-  constructor(props) {
-    super(props)
+import DrupalImage from '../../src/DrupalImage'
+import DrupalDateTime from '../../src/DrupalDateTime'
+import DrupalDatePicker from '../../src/DrupalDatePicker'
 
-    this.state = {
-      fileUUIDs: [
-        '44e97ee6-8435-4a6e-9bad-37668b47cd43',
-        '2aa30958-b0fe-4c8f-ae24-42b12419a85d'
-      ]
-    }
+const Demo = () => {
+  const [images, setImages] = useState([])
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
 
-    this.onChange = this.onChange.bind(this)
-  }
+  return (
+    <div>
+      <h1>react-drupal</h1>
 
-  onChange(uuid) {
-    this.setState({
-      fileUUIDs: uuid
-    })
-  }
-
-  render() {
-    console.log(this.state.fileUUIDs)
-    return <div>
-      <h1>Media Image Demo</h1>
-      <MediaImage
-        id={'field_image'}
+      <h2>DrupalImage</h2>
+      <DrupalImage
+        images={images}
         limit={1}
-        field={'field_image'}
-        label={'Field Image'}
-        entityType={'node'}
-        entityBundle={'article'}
-        baseURL={'https://example.pantheonsite.io'}
-        authorization={'username:password'}
-        fileUUIDs={this.state.fileUUIDs}
-        onChange={this.onChange}
-      />
+        accept="image/*"
+        onDelete={async (id) => {
+          console.log(`Please delete this image: ${id}`)
+          await FileEntity.Delete(id)
+          setImages(images.filter(image => image.id !== id))
+        }}
+        onUpload={async (image) => {
+          console.log('Please upload this image', image)
+          GlobalClient.baseUrl = 'https://example.pantheonsite.io'
+          GlobalClient.authorization = `Basic ${btoa('username:password')}`
+          const file = await FileEntity.Upload(image, null, 'node', 'article', 'field_image')
+          setImages([
+            ...images,
+            {
+              id: file.entityUuid,
+              name: image.name,
+              url: `https://example.pantheonsite.io${file.uri.url}`
+            }
+          ])
+        }}
+        />
+
+      <h2>DrupalDateTime</h2>
+      <DrupalDateTime
+        date={date}
+        onChange={setDate}/>
+      
+      <h2>DrupalDatePicker</h2>
+      <DrupalDatePicker
+        date={date}
+        onChange={setDate}/>
     </div>
-  }
+  )
 }
 
 render(<Demo/>, document.querySelector('#demo'))
