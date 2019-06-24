@@ -1,18 +1,27 @@
-import React, { useState } from 'react'
+import 'regenerator-runtime/runtime'
+import { File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
+import React, { useState, useEffect } from 'react'
 import { render } from 'react-dom'
 import moment from 'moment'
-import { GlobalClient } from 'drupal-jsonapi-client'
 
 import DrupalImage from '../../src/DrupalImage'
 import DrupalDateTime from '../../src/DrupalDateTime'
+import DrupalDatePicker from '../../src/DrupalDatePicker'
 import DrupalLogin from '../../src/DrupalLogin'
 import DrupalRegister from '../../src/DrupalRegister'
 import DrupalAuthenticationProvider from '../../src/DrupalAuthenticationProvider'
 
 const Demo = () => {
-  const [files, setFiles] = useState([])
+  const [images, setImages] = useState([])
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
   const [baseUrl, setBaseUrl] = useState('https://example.pantheonsite.io')
+  const [entityType, setEntityType] = useState('node')
+  const [entityBundle, setEntityBundle] = useState('article')
+  const [fieldName, setFieldName] = useState('field_image')
+
+  useEffect(() => {
+    GlobalClient.baseUrl = baseUrl
+  }, [baseUrl])
 
   return (
     <div>
@@ -20,24 +29,16 @@ const Demo = () => {
       <h2>Configuration</h2>
       <label htmlFor="base-url">Drupal Site URL</label>
       <input style={{ width: '250px' }} id="base-url" type="url" value={baseUrl} onChange={(e) => { setBaseUrl(e.target.value) }} />
+      <br />
+      <label htmlFor="base-url">Entity Type</label>
+      <input style={{ width: '250px' }} id="entity-type" type="text" value={entityType} onChange={(e) => { setEntityType(e.target.value) }} />
+      <br />
+      <label htmlFor="base-url">Entity Bundle</label>
+      <input style={{ width: '250px' }} id="entity-bundle" type="text" value={entityBundle} onChange={(e) => { setEntityBundle(e.target.value) }} />
+      <br />
+      <label htmlFor="base-url">Field Name</label>
+      <input style={{ width: '250px' }} id="field-name" type="text" value={fieldName} onChange={(e) => { setFieldName(e.target.value) }} />
 
-      <h2>DrupalImage</h2>
-      <DrupalImage
-        id={'field_image'}
-        limit={1}
-        field={'field_image'}
-        label={'Field Image'}
-        entityType={'node'}
-        entityBundle={'article'}
-        baseURL={baseUrl}
-        authorization={'username:password'}
-        fileUUIDs={files}
-        onChange={setFiles}
-      />
-
-      <h2>DrupalDateTime</h2>
-      <DrupalDateTime id={'field_datetime'} date={date} onChange={setDate} />
-      
       <h2>DrupalLogin</h2>
       <DrupalLogin
         expireAfterMinutes={1}
@@ -51,7 +52,7 @@ const Demo = () => {
       <h2>DrupalAuthenticationProvider</h2>
       <DrupalAuthenticationProvider
         onInit={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}
-        onChange={console.log}>
+        onChange={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}>
         {({ jwt }) => jwt ? (
           <React.Fragment>
             <h3>JWT</h3>
@@ -59,6 +60,40 @@ const Demo = () => {
           </React.Fragment>
         ) : null}
       </DrupalAuthenticationProvider>
+
+      <h2>DrupalImage</h2>
+      <DrupalImage
+        images={images}
+        limit={1}
+        accept="image/*"
+        onDelete={async (id) => {
+          console.log(`Please delete this image: ${id}`)
+          await FileEntity.Delete(id)
+          setImages(images.filter(image => image.id !== id))
+        }}
+        onUpload={async (image) => {
+          console.log('Please upload this image', image)
+          const file = await FileEntity.Upload(image, null, entityType, entityBundle, fieldName)
+          setImages([
+            ...images,
+            {
+              id: file.entityUuid,
+              name: image.name,
+              url: `${baseUrl}${file.uri.url}`
+            }
+          ])
+        }}
+        />
+
+      <h2>DrupalDateTime</h2>
+      <DrupalDateTime
+        date={date}
+        onChange={setDate}/>
+      
+      <h2>DrupalDatePicker</h2>
+      <DrupalDatePicker
+        date={date}
+        onChange={setDate}/>
     </div>
   )
 }
