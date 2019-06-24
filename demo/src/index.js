@@ -1,14 +1,16 @@
+import 'regenerator-runtime/runtime'
+import { File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
 import React, { useState } from 'react'
 import { render } from 'react-dom'
-import DrupalImage from '../../src/DrupalImage'
 import moment from 'moment'
+
+import DrupalImage from '../../src/DrupalImage'
 import DrupalDateTime from '../../src/DrupalDateTime'
-import DrupalDatePicker from '../../src/DrupalDatePicker';
+import DrupalDatePicker from '../../src/DrupalDatePicker'
 
 const Demo = () => {
-  const [files, setFiles] = useState([])
+  const [images, setImages] = useState([])
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'))
-  console.log(date)
 
   return (
     <div>
@@ -16,17 +18,28 @@ const Demo = () => {
 
       <h2>DrupalImage</h2>
       <DrupalImage
-        id={'field_image'}
+        images={images}
         limit={1}
-        field={'field_image'}
-        label={'Field Image'}
-        entityType={'node'}
-        entityBundle={'article'}
-        baseURL={'https://example.pantheonsite.io'}
-        authorization={'username:password'}
-        fileUUIDs={files}
-        onChange={setFiles}
-      />
+        accept="image/*"
+        onDelete={(id) => {
+          console.log(`Please delete this image: ${id}`)
+          setImages(images.filter(image => image.id !== id))
+        }}
+        onUpload={async (image) => {
+          console.log('Please upload this image', image)
+          GlobalClient.baseUrl = 'https://example.pantheonsite.io'
+          GlobalClient.authorization = `Basic ${btoa('username:password')}`
+          const file = await FileEntity.Upload(image, null, 'node', 'article', 'field_image')
+          setImages([
+            ...images,
+            {
+              id: file.entityUuid,
+              name: image.name,
+              url: `https://example.pantheonsite.io${file.uri.url}`
+            }
+          ])
+        }}
+        />
 
       <h2>DrupalDateTime</h2>
       <DrupalDateTime
