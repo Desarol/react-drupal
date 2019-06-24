@@ -21,8 +21,9 @@ const Demo = () => {
         images={images}
         limit={1}
         accept="image/*"
-        onDelete={(id) => {
+        onDelete={async (id) => {
           console.log(`Please delete this image: ${id}`)
+          await FileEntity.Delete(id)
           setImages(images.filter(image => image.id !== id))
         }}
         onUpload={async (image) => {
