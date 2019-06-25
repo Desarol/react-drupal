@@ -1,6 +1,6 @@
 # react-drupal
 
-https://5d1165340e976b88ad025878--musing-galileo-d9d50f.netlify.com/
+https://musing-galileo-d9d50f.netlify.com/
 
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
