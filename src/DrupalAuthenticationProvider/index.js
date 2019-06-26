@@ -7,17 +7,17 @@ const DrupalAuthenticationProvider = ({
   onInit = () => {},
   sessionStorageKey = DRUPAL_SESSION_KEY,
 }) => {
-  const [jwt, setJWT] = useState(getSession(sessionStorageKey))
+  const [session, setSession] = useState(getSession(sessionStorageKey))
 
   useEffect(() => {
-    onInit(jwt)
+    onInit(session)
   }, [onInit])
 
   const checkForSessionStorageData = () => {
-    const session = getSession(sessionStorageKey)
-    if (jwt !== session) {
-      setJWT(session)
-      onChange(session)
+    const nextSession = getSession(sessionStorageKey)
+    if (session !== nextSession) {
+      setSession(nextSession)
+      onChange(nextSession)
     }
   }
 
@@ -29,7 +29,7 @@ const DrupalAuthenticationProvider = ({
     }
   })
 
-  return typeof children === 'function' ? children({ jwt }) : null
+  return typeof children === 'function' ? children(session) : null
 }
 
 export default DrupalAuthenticationProvider

@@ -102,34 +102,30 @@ export const setLocalStorage = (key, object, expiration = -1) => {
 export const DRUPAL_SESSION_KEY = 'drupal.session'
 
 /**
- * Save a JWT in local storage.
+ * Save a session in local storage.
  * 
- * @param {string} jwt
+ * @param {object} session
  * @param {string} key
  * @param {number} expireAfterMinutes default = 60
  */
-export const saveSession = (jwt, key = DRUPAL_SESSION_KEY, expireAfterMinutes = 60) => {
+export const saveSession = (session, key = DRUPAL_SESSION_KEY, expireAfterMinutes = 60) => {
   const expireAfterMs = (expireAfterMinutes * 60 * 1000)
-  setLocalStorage(key, { jwt }, Date.now() + expireAfterMs)
+  setLocalStorage(key, session, Date.now() + expireAfterMs)
 }
 
 /**
- * Get the current JWT from local storage.
+ * Get the current session from local storage.
  *
  * @param {string} key
  * 
- * @returns jwt or null
+ * @returns session or null
  */
 export const getSession = (key = DRUPAL_SESSION_KEY) => {
-  const session = getLocalStorage(key)
-  if (session) {
-    return session.jwt
-  }
-  return null
+  return getLocalStorage(key) || {}
 }
 
 /**
- * Remove a JWT.
+ * Clear a session.
  * 
  * @param {string} key
  */

@@ -42,17 +42,17 @@ const Demo = () => {
       <h2>DrupalLogin</h2>
       <DrupalLogin
         expireAfterMinutes={1}
-        onAuthenticationChange={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
+        onAuthenticationChange={({ jwt }) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
 
       <h2>DrupalRegister</h2>
       <DrupalRegister
         expireAfterMinutes={1}
-        onAuthenticationChange={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
+        onAuthenticationChange={({ jwt }) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
 
       <h2>DrupalAuthenticationProvider</h2>
       <DrupalAuthenticationProvider
-        onInit={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}
-        onChange={(jwt) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}>
+        onInit={({ jwt }) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}
+        onChange={({ jwt }) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }}>
         {({ jwt }) => jwt ? (
           <React.Fragment>
             <h3>JWT</h3>

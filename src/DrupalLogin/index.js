@@ -8,6 +8,7 @@ import { saveSession, DRUPAL_SESSION_KEY } from '../utils'
 export default ({
   onAuthenticationInit,
   onAuthenticationChange,
+  onCreateSession = async (user, session) => session,
   expireAfterMinutes = 60,
   usernameLabel = 'Username',
   passwordLabel = 'Password',
@@ -21,10 +22,10 @@ export default ({
           onSubmit={async ({ username, password }, { setSubmitting, setStatus }) => {
             try {
               const user = await User.Login(username, password)
-              saveSession(user.access_token, DRUPAL_SESSION_KEY, expireAfterMinutes)
+              const session = await onCreateSession(user, { jwt: user.access_token })
+              saveSession(session, DRUPAL_SESSION_KEY, expireAfterMinutes)
               setSubmitting(false)
             } catch (err) {
-              console.error(err)
               try {
                 setStatus(err.response.data.message)
               } catch (err) {
