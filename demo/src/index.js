@@ -10,7 +10,6 @@ import DrupalDatePicker from '../../src/DrupalDatePicker'
 import DrupalLogin from '../../src/DrupalLogin'
 import DrupalRegister from '../../src/DrupalRegister'
 import DrupalAuthenticationProvider from '../../src/DrupalAuthenticationProvider'
-import User from 'drupal-jsonapi-client/lib/User';
 
 const Demo = () => {
   const [images, setImages] = useState([])
