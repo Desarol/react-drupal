@@ -1,8 +1,9 @@
 # react-drupal
 
+https://musing-galileo-d9d50f.netlify.com/
+
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
 
 A collection of React components that help build a decoupled Drupal site.
 
