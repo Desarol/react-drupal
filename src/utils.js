@@ -121,7 +121,8 @@ export const saveSession = (session, key = DRUPAL_SESSION_KEY, expireAfterMinute
  * @returns session or null
  */
 export const getSession = (key = DRUPAL_SESSION_KEY) => {
-  return getLocalStorage(key) || {}
+  const session = getLocalStorage(key)
+  return (typeof session === 'object' && session !== null ? session : {})
 }
 
 /**

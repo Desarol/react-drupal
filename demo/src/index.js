@@ -9,7 +9,7 @@ import DrupalDateTime from '../../src/DrupalDateTime'
 import DrupalDatePicker from '../../src/DrupalDatePicker'
 import DrupalLogin from '../../src/DrupalLogin'
 import DrupalRegister from '../../src/DrupalRegister'
-import DrupalAuthenticationProvider from '../../src/DrupalAuthenticationProvider'
+import DrupalAuthenticationProvider from '../../src/DrupalAuthenticationProvider' 
 
 const Demo = () => {
   const [images, setImages] = useState([])
