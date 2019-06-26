@@ -1,5 +1,5 @@
 import 'regenerator-runtime/runtime'
-import { File as FileEntity, GlobalClient } from 'drupal-jsonapi-client'
+import { File as FileEntity, GlobalClient, User } from 'drupal-jsonapi-client'
 import React, { useState, useEffect } from 'react'
 import { render } from 'react-dom'
 import moment from 'moment'
@@ -10,6 +10,7 @@ import DrupalDatePicker from '../../src/DrupalDatePicker'
 import DrupalLogin from '../../src/DrupalLogin'
 import DrupalRegister from '../../src/DrupalRegister'
 import DrupalAuthenticationProvider from '../../src/DrupalAuthenticationProvider'
+import User from 'drupal-jsonapi-client/lib/User';
 
 const Demo = () => {
   const [images, setImages] = useState([])
@@ -42,11 +43,14 @@ const Demo = () => {
       <h2>DrupalLogin</h2>
       <DrupalLogin
         expireAfterMinutes={1}
+        onLogin={(username, password) => User.Login(username, password)}
         onAuthenticationChange={({ jwt }) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
 
       <h2>DrupalRegister</h2>
       <DrupalRegister
         expireAfterMinutes={1}
+        onLogin={(username, password) => User.Login(username, password)}
+        onRegister={(email, username, password) => User.Register(email, username, password)}
         onAuthenticationChange={({ jwt }) => { GlobalClient.authorization = jwt ? `Bearer ${jwt}` : null }} />
 
       <h2>DrupalAuthenticationProvider</h2>
