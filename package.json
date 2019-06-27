@@ -1,6 +1,6 @@
 {
   "name": "react-drupal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Components for Drupal",
   "main": "index.js",
   "module": "es/index.js",
