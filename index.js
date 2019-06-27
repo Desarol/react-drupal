@@ -1,4 +1,4 @@
-import * as DrupalAuthentication from './src/utils'
+import * as DrupalAuthentication from './lib/utils'
 export { DrupalAuthentication }
 
 export { default as DrupalAuthenticationProvider } from './lib/DrupalAuthenticationProvider'
