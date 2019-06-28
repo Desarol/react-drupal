@@ -48,7 +48,7 @@ const DrupalImage = ({
     {images.length < limit && (
       <div className="drupal-image__input-wrapper">
         <input
-          class="drupal-image__input"
+          className="drupal-image__input"
           name="drupal-image"
           accept={accept}
           type="file"
