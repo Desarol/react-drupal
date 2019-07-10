@@ -1,12 +1,11 @@
 {
   "name": "react-drupal",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "React Components for Drupal",
   "main": "index.js",
   "module": "es/index.js",
   "files": [
     "css",
-    "es",
     "lib",
     "umd"
   ],
@@ -20,8 +19,12 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "drupal-jsonapi-client": "^3.0.2",
-    "regenerator-runtime": "^0.13.2"
+    "drupal-jsonapi-client": "^3.0.5",
+    "formik": "^1.5.7",
+    "moment": "^2.24.0",
+    "react-dates": "^20.2.4",
+    "regenerator-runtime": "^0.13.2",
+    "yup": "^0.27.0"
   },
   "peerDependencies": {
     "react": "16.x"
